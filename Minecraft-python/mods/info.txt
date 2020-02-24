@@ -1,0 +1,2 @@
+default.py - configuration player
+textures.py - texture name standart "default" minecraft/textures/block/<filename>.png
