@@ -12,8 +12,9 @@ class NoiseParameters:
 class NoiseGen:
     def __init__(self, seed):
         self.seed = seed
+        print(seed)
         self.noiseParams = NoiseParameters(
-            7, 50, 450, 0.3, 20
+            7, 50, 350, 0.3, 20
         )
 
     def _getNoise2(self, n):
@@ -49,7 +50,7 @@ class NoiseGen:
         return rec3
 
     def getHeight(self, x, z):
-        totalValue = 0.0
+        totalValue = 5.0
 
         for a in range(self.noiseParams.octaves - 1):
             freq = math.pow(2.0, a)
