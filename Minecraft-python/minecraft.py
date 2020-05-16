@@ -17,6 +17,7 @@ from pyglet.media import *
 
 from scripts.noise_gen import NoiseGen
 # image load
+
 #sky = pyglet.resource.image ('textures/ui/sky.png')
 #inven_image = pyglet.resource.image ('textures/ui/inven.png')
 
@@ -192,14 +193,14 @@ class Model(object):
         """
         #seed
         #gen = NoiseGen(452692)
-        gen = NoiseGen(random.randint(100000, 999999))#default 452692
-        print(gen)
+        gen = NoiseGen(random.randint(0, 9999999999999999))#default 452692
+        #gen = NoiseGen(input('seed: '))
         n = 228 #size of the world
         s = 1  # step size
-        y = 0  # initial y height
+        y = 4  # initial y height
         
         #too lazy to do this properly lol
-        heightMap = []
+        heightMap = [4]
         for x in xrange(0, n, s):
             for z in xrange(0, n, s):
                 heightMap.append(0)
@@ -211,20 +212,27 @@ class Model(object):
         for x in xrange(0, n, s):
             for z in xrange(0, n, s):
                 h = heightMap[z + x * n]
-                if (h < 15):
+                if (h < 17):
                     self.add_block((x, h, z), SAND, immediate=True)
-                    for y in range (h, 14):
+                    for y in range (h, 16):
                         self.add_block((x, y, z), WATER, immediate=True)
+                    for y in xrange(h - 1, 0, -1):
+                        self.add_block((x, y, z), STONE, immediate=True)
                     continue
                 if (h < 18):
                     self.add_block((x, h, z), SAND, immediate=True)
                 self.add_block((x, h, z), GRASS, immediate=True)
                 for y in xrange(h - 1, 0, -1):
-                    self.add_block((x, y, z), STONE, immediate=False)
+                    self.add_block((x, y, z), STONE, immediate=True)
                 #Maybe add tree at this (x, z)
+                if (h > 10):
+                    if random.randrange(0, 1000000) > 999900:
+                        cobblestone = (2)
+                        for y in xrange(h + 0, h + cobblestone):
+                            self.add_block((x, y, z), OLDR, immediate=False)
                 if (h > 20):
                     if random.randrange(0, 1000) > 990:
-                        treeHeight = random.randrange(3, 4)
+                        treeHeight = random.randrange(3, 5)
                         #Tree trunk
                         for y in xrange(h + 1, h + treeHeight):
                             self.add_block((x, y, z), WOOD, immediate=False)
@@ -237,10 +245,6 @@ class Model(object):
                         #for y in xrange(1):
                             #for x in xrange(1):
                                 #self.add_block((x, y, z), OLDR, immediate=False)
-                if (h < 1):
-                    for y in xrange(1):
-                        for x in xrange(1):
-                            self.add_block((x, y, z), OLDR, immediate=False)
     def hit_test(self, position, vector, max_distance=6):
         """ Line of sight search from current position. If a block is
         intersected it is returned, along with the block previously in the line
@@ -502,7 +506,7 @@ class Window(pyglet.window.Window):
 
         # Current (x, y, z) position in the world, specified with floats. Note
         # that, perhaps unlike in math class, the y-axis is the vertical axis.
-        self.position = (124, 50, 60)
+        self.position = (125, 50, 125)
 
         # First element is rotation of the player in the x-z plane (ground
         # plane) measured from the z-axis down. The second is the rotation
@@ -778,7 +782,7 @@ class Window(pyglet.window.Window):
                     self.model.add_block(previous, self.block)
             elif button == pyglet.window.mouse.LEFT and block:
                 texture = self.model.world[block]
-                if texture:
+                if texture != BEDROCK:
                     self.model.remove_block(block)
                     sound = pyglet.media.load('sounds/break.wav')
                     soundpl.queue(sound)
@@ -880,6 +884,7 @@ class Window(pyglet.window.Window):
             sys.exit()
         elif symbol == key.F1:
             quit()
+        #self.img = pyglet.image.load("texture/ui/block1.png")
 
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
