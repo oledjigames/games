@@ -3,8 +3,8 @@ import math
 from pyglet.gl import *
 TICKS_PER_SEC = 160 #fps
 
-# Size of sectors used to ease block loading.
-SECTOR_SIZE = 16
+# Size of sectors used to ease block loading.16
+SECTOR_SIZE = 50
 
 WALKING_SPEED = 5 #speed of walking
 FLYING_SPEED = 15 #fly speed
