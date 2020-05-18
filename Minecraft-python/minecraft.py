@@ -193,7 +193,7 @@ class Model(object):
         """
         #seed
         #gen = NoiseGen(452692)
-        gen = NoiseGen(random.randint(0, 9999999999999999))#default 452692
+        gen = NoiseGen(random.randint(0, 9999999999999999))#default 6456287602362250
         #gen = NoiseGen(input('seed: '))
         n = 228 #size of the world
         s = 1  # step size
@@ -660,6 +660,9 @@ class Window(pyglet.window.Window):
             glClearColor(0.4, 0.50, 0.8, 1) 
             glFogfv(GL_FOG_COLOR, (GLfloat * 4)(0.4, 0.50, 0.8, 1))
             pass
+        #if self.position == (0, -3, 0):
+            #self.position = (125, 50, 125)
+            #pass
         """ This method is scheduled to be called repeatedly by the pyglet
         clock.
 
@@ -845,6 +848,8 @@ class Window(pyglet.window.Window):
         elif symbol == key.F11:
             #not working yet
             window = pyglet.window.Window(fullscreen = True)
+        elif symbol == key.R:
+            self.position = (125, 50, 125)
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
         mappings.
@@ -878,7 +883,7 @@ class Window(pyglet.window.Window):
         elif symbol == key.F7:
             with open('worlds\level.dat', 'rb') as f:  # Python 3: open(..., 'rb')
                 flying = pickle.load(f)
-        elif symbol == key.R:
+        elif symbol == key.F3:
             os.system("python minecraft.py")
             time.sleep(0.2)
             sys.exit()
@@ -1035,7 +1040,7 @@ def main():
     setup()
     pyglet.app.run()
 #music
-music_list = ['world', 'world2']
+music_list = ['world', 'world2', 'world3']
 player = pyglet.media.Player()
 music = pyglet.media.load('music/' + random.choice(music_list) + '.wav')
 player.queue(music)
