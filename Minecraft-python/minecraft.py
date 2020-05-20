@@ -20,9 +20,19 @@ from scripts.noise_gen import NoiseGen
 
 #sky = pyglet.resource.image ('textures/ui/sky.png')
 #inven_image = pyglet.resource.image ('textures/ui/inven.png')
-
+#music
+music_list = ['world', 'world2', 'world3', 'world4']
+player = pyglet.media.Player()
+music = pyglet.media.load('music/' + random.choice(music_list) + '.wav')
+#player.loop = True
+player.queue(music)
+#player.eos_action = 'loop'
+player.play()
+debug_mode=0
+#player.eos_action = pyglet.media.SourceGroup.loop
 #
 time_world = 0
+time_music = 0
 
 TICKS_PER_SEC = 120
 
@@ -615,11 +625,22 @@ class Window(pyglet.window.Window):
 
 
     def update(self, dt):
-
-        #time day night
+        #music = pyglet.media.load('music/' + random.choice(music_list) + '.wav')
+        #player.play()
+        #time хуй
         global time_world
+        global time_music
         time_world +=1
-        #print(time_world)
+        time_music +=1
+        print(time_music)
+        if time_music==(21000):
+            music = pyglet.media.load('music/' + random.choice(music_list) + '.wav')
+            player.queue(music)
+            player.play()
+            pass
+        if time_music==(21001):
+            time_music=0
+            pass
         if time_world==(9500):
             time_world= 0
             pass
@@ -850,6 +871,8 @@ class Window(pyglet.window.Window):
             window = pyglet.window.Window(fullscreen = True)
         elif symbol == key.R:
             self.position = (125, 50, 125)
+        elif symbol == key.O:
+            print()
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
         mappings.
@@ -965,7 +988,7 @@ class Window(pyglet.window.Window):
         block = self.model.hit_test(self.position, vector)[0]
         if block:
             x, y, z = block
-            vertex_data = cube_vertices(x, y, z, 0.51)
+            vertex_data = cube_vertices(x, y, z, 0.50)#51
             glColor3d(0, 0, 0)
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
             pyglet.graphics.draw(24, GL_QUADS, ('v3f/static', vertex_data))
@@ -976,9 +999,12 @@ class Window(pyglet.window.Window):
 
         """
         x, y, z = self.position
+        
         self.label.text = 'Beta 0.0.4 Fps: %02d (%.2f, %.2f, %.2f) %d / %d' % (
-            pyglet.clock.get_fps(), x, y, z,
-            len(self.model._shown), len(self.model.world))
+        pyglet.clock.get_fps(), x, y, z,
+        len(self.model._shown), len(self.model.world))
+            #Beta 0.0.4 Fps: %02d (%.2f, %.2f, %.2f) %d / %d
+
         self.label.draw()
     def draw_reticle(self):
         """ Draw the crosshairs in the center of the screen.
@@ -1039,14 +1065,7 @@ def main():
     window.set_exclusive_mouse(True)
     setup()
     pyglet.app.run()
-#music
-music_list = ['world', 'world2', 'world3']
-player = pyglet.media.Player()
-music = pyglet.media.load('music/' + random.choice(music_list) + '.wav')
-player.queue(music)
-#player.eos_action = 'loop'
-player.play()
-#player.eos_action = pyglet.media.SourceGroup.loop
+
 
 #
 from mods.default import *
