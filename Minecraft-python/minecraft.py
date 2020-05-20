@@ -627,7 +627,7 @@ class Window(pyglet.window.Window):
     def update(self, dt):
         #music = pyglet.media.load('music/' + random.choice(music_list) + '.wav')
         #player.play()
-        #time хуй
+        #time 
         global time_world
         global time_music
         time_world +=1
